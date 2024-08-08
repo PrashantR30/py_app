@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spot-node
+  namespace: prod
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  nodeSelector:
+    cloud.google.com/gke-spot: "true"
+  # Tolerate the spot taint
+  tolerations:
+  - key: "cloud.google.com/gke-spot"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"

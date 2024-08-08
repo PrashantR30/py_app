@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: general-node
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  nodeSelector:
+    cloud.google.com/gke-spot: "false"
+  # Alternatively, you can use affinity rules for more flexibility
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: cloud.google.com/gke-spot
+            operator: NotIn
+            values:
+            - "true"
