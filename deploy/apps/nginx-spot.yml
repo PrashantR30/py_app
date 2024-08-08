@@ -1,16 +1,25 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: spot-node
-  namespace: prod
+  name: spot-node-pod
 spec:
   containers:
   - name: nginx
     image: nginx
-  nodeSelector:
-    cloud.google.com/gke-spot: "true"
-  # Tolerate the spot taint
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: cloud.google.com/gke-spot
+            operator: In
+            values:
+            - "true"
   tolerations:
+  - key: "instance_type"
+    operator: "Equal"
+    value: "spot"
+    effect: "NoSchedule"
   - key: "cloud.google.com/gke-spot"
     operator: "Equal"
     value: "true"
