@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: spot-node-pod
+  name: spot-pod
   namespace: prod
 spec:
   containers:
@@ -12,16 +12,12 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
         - matchExpressions:
-          - key: cloud.google.com/gke-spot
+          - key: type
             operator: In
             values:
-            - "true"
+            - "spot"
   tolerations:
   - key: "instance_type"
     operator: "Equal"
     value: "spot"
-    effect: "NoSchedule"
-  - key: "cloud.google.com/gke-spot"
-    operator: "Equal"
-    value: "true"
     effect: "NoSchedule"
