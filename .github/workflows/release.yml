@@ -19,12 +19,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Set execute permissions for release.sh
-        with:
-        sparse-checkout: |
-          .github
-          builds/release.sh
+          sparse-checkout: |
+            .github
+            builds/release.sh
           
       # - name: Release
       #   run: bash release.sh
