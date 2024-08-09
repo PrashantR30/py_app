@@ -12,19 +12,11 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@master
+      - name: Bump version and push tag
+        uses: hennejg/github-tag-action@v4.1.jh1
         with:
-          node-version: '20'
-
-      - name: Set execute permissions for release.sh
-        run: chmod +x .github/builds/release.sh
-
-      - name: Run release.sh
-        run: .github/builds/release.sh
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           
       # - name: Release
       #   run: bash release.sh
