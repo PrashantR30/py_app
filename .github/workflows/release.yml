@@ -24,7 +24,7 @@ jobs:
         run: chmod +x ./release.sh
 
       - name: Release
-        run: ./release.sh
+        run: bash release.sh
 
   # build-push-to-gar:
   #   name: Build and Push to GAR
