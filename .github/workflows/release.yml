@@ -45,7 +45,9 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build -f ./src/docker/Dockerfile -t ${{ vars.IMAGE_NAME }}:latest .
+        cd ./src
+        docker build -f ./docker/Dockerfile -t ${{ vars.IMAGE_NAME }}:latest .
         docker tag ${{ vars.IMAGE_NAME }}:latest ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
         docker image ls
+        docker push ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
 
