@@ -32,14 +32,14 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
 
-    - name: Authorize Docker for GCR
-      run: gcloud auth configure-docker
+    # - name: Authorize Docker for GCR
+    #   run: gcloud auth configure-docker
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
 
-    # - name: Build Docker Image
-    #   run: |
-    #     docker build -t ${{ env.IMAGE_NAME }}:latest .
-    #     docker image ls
+    - name: Build Docker Image
+      run: |
+        docker build -t ${{ env.IMAGE_NAME }}:latest .
+        docker image ls
