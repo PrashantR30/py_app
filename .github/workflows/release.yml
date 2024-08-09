@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Set execute permissions for release.sh
+        run: chmod +x ./builds/release.sh
+
       - name: Release
         run: ./builds/release.sh
 
