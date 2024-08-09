@@ -54,6 +54,6 @@ jobs:
         docker image ls
     - name: Push to GAR
       run: |
-        gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${{ var.GAR_REGION }}-docker.pkg.dev
+        gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${{ vars.GAR_REGION }}-docker.pkg.dev
         docker push ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
 
