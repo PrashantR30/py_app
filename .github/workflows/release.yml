@@ -10,13 +10,14 @@ on:
 jobs:
   release:
     name: Release
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Release
         uses: huggingface/semver-release-action@latest
-          
       # - name: Release
       #   run: bash release.sh
 
