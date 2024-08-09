@@ -23,29 +23,29 @@ jobs:
       - name: Release
         run: ./builds/release.sh
 
-  build-push-to-gar:
-    name: Build and Push to GAR
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+  # build-push-to-gar:
+  #   name: Build and Push to GAR
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
 
-      - name: Set up GAR
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-          project_id: ${{ env.PROJECT_ID }}
-          export_default_credentials: true
+  #     - name: Set up GAR
+  #       uses: google-github-actions/setup-gcloud@master
+  #       with:
+  #         service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+  #         project_id: ${{ env.PROJECT_ID }}
+  #         export_default_credentials: true
 
-      - name: Build and Push
-        env:
-          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-        run: |
-          sudo apt-get install -y git
-          ./builds/build-to-ecr.sh
-      if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
+  #     - name: Build and Push
+  #       env:
+  #         IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+  #       run: |
+  #         sudo apt-get install -y git
+  #         ./builds/build-to-ecr.sh
+  #     if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
 
   
