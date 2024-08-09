@@ -21,8 +21,11 @@ jobs:
           node-version: '20'
 
       - name: Set execute permissions for release.sh
-        run: pwd
-
+        with:
+        sparse-checkout: |
+          .github
+          builds/release.sh
+          
       # - name: Release
       #   run: bash release.sh
 
