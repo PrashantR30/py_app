@@ -1,0 +1,54 @@
+name: Release Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+      - cicd
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 21
+
+      - name: Release
+        run: ./builds/release.sh
+
+  build_and_push_to_ecr:
+    name: Build and Push to ECR
+    runs-on: ubuntu-latest
+    services:
+      docker:
+        options: --memory=2g
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up GAR
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          export_default_credentials: true
+
+      - name: Build and Push
+        env:
+          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+        run: |
+          sudo apt-get install -y git
+          ./builds/build-to-ecr.sh
+      if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
+
+  
