@@ -1,16 +1,21 @@
 #!/bin/bash
 set -e
 
-if [ -z "${IMAGE_NAME}" ]; then
-  echo "ERROR: IMAGE_NAME environment variable is not set."
-  exit 1
-fi
+LATEST_TAG="$(git tag --list --sort=committerdate | tail -1)"
+echo $LATEST_TAG
 
-# Authenticate with Google Cloud
-echo "Authenticating with Google Cloud"
-gcloud auth configure-docker
 
-REGISTRY_URI="${GCP_REGISTRY}/${GCP_PROJECT_ID}/${IMAGE_NAME}"
+
+# if [ -z "${IMAGE_NAME}" ]; then
+#   echo "ERROR: IMAGE_NAME environment variable is not set."
+#   exit 1
+# fi
+
+# # Authenticate with Google Cloud
+# echo "Authenticating with Google Cloud"
+# gcloud auth configure-docker
+
+# REGISTRY_URI="${GCP_REGISTRY}/${GCP_PROJECT_ID}/${IMAGE_NAME}"
 
 
 
