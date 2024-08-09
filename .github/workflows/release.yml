@@ -21,7 +21,7 @@ jobs:
           node-version: '20'
 
       - name: Release
-        run: ../builds/release.sh
+        run: ./builds/release.sh
 
   # build-push-to-gar:
   #   name: Build and Push to GAR
