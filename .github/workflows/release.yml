@@ -23,8 +23,8 @@ jobs:
       - name: Release
         run: ./builds/release.sh
 
-  build_and_push_to_ecr:
-    name: Build and Push to ECR
+  build-push-to-gar:
+    name: Build and Push to GAR
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
