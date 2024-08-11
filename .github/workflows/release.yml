@@ -21,9 +21,6 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v2
       with:
@@ -32,19 +29,10 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
 
-    - name: Extract region from gcloud CLI
-      id: extract_region
-      run: |
-        echo "REGION=$(gcloud config get-value compute/region)" >> $GITHUB_ENV
-
     - name: Set LATEST_TAG environment variable
       id: set_latest_tag
       run: |
         echo "LATEST_TAG=$(git tag --list --sort=committerdate | tail -1)" >> $GITHUB_ENV
-
-    - name: Echo' ing Project Variables
-      run: |
-        echo "The region is $REGION"
         echo "The latest tag is $LATEST_TAG"
 
     - name: Set up Docker Buildx
@@ -61,7 +49,7 @@ jobs:
         docker image ls
 
     - name: Authenticate to GAR
-      run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${REGION}-docker.pkg.dev
+      run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${{ vars.REGION }}-docker.pkg.dev
 
     - name: Push to GAR
       run: docker push ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
