@@ -9,7 +9,7 @@ on:
 
 jobs:
   release:
-    name: Release
+    name: Release & Push to GAR
     runs-on: ubuntu-latest
 
     steps:
@@ -32,13 +32,20 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
 
+    - name: Extract region from gcloud CLI
+      id: extract_region
+      run: |
+        echo "REGION=$(gcloud config get-value compute/region)" >> $GITHUB_ENV
 
     - name: Set LATEST_TAG environment variable
       id: set_latest_tag
-      run: echo "LATEST_TAG=$(git tag --list --sort=committerdate | tail -1)" >> $GITHUB_ENV
+      run: |
+        echo "LATEST_TAG=$(git tag --list --sort=committerdate | tail -1)" >> $GITHUB_ENV
 
-    - name: Debug LATEST_TAG
-      run: echo "The latest tag is $LATEST_TAG"
+    - name: Echo' ing Project Variables
+      run: |
+        echo "The region is $REGION"
+        echo "The latest tag is $LATEST_TAG"
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -47,13 +54,15 @@ jobs:
       run: |
         cd ./src
         docker build -f ./docker/Dockerfile -t ${{ vars.IMAGE_NAME }}:latest .
-        docker image ls
+
     - name: Tag Docker Image
       run: |
         docker tag ${{ vars.IMAGE_NAME }}:latest ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
         docker image ls
+
+    - name: Authenticate to GAR
+      run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${REGION}-docker.pkg.dev
+
     - name: Push to GAR
-      run: |
-        gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${{ vars.GAR_REGION }}-docker.pkg.dev
-        docker push ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
+      run: docker push ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
 
