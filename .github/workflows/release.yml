@@ -44,7 +44,7 @@ jobs:
     
     - name: Tag Docker Image
       run: |
-        docker tag app:latest ${{ env.GAR_URL }}/${{ env.IMAGE_NAME }}:${{ env.LATEST_TAG }}
+        docker tag app:latest ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:${{ env.LATEST_TAG }}
         docker image ls
     
     # - name: Authenticate to GAR
