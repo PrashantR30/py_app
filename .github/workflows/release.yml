@@ -41,15 +41,14 @@ jobs:
     - name: Build Docker Image
       run: |
         cd ./src
-        docker build -f ./docker/Dockerfile -t ${{ vars.IMAGE_NAME }}:latest .
+        docker build -f ./docker/Dockerfile -t app:latest .
 
     - name: Tag Docker Image
       run: |
-        echo docker tag ${{ vars.IMAGE_NAME }}:latest ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
+        echo "docker tag app:latest ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG"
+        docker tag app:latest ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
         docker image ls
-        echo ${{ vars.GAR_URL }}
-        echo ${{ vars.IMAGE_NAME }}
-        echo $LATEST_TAG
+    
 
 
     # - name: Authenticate to GAR
