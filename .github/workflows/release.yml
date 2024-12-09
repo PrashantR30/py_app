@@ -32,7 +32,7 @@ jobs:
     - name: Set LATEST_TAG environment variable
       id: set_latest_tag
       run: |
-        echo "LATEST_TAG=$(git tag --list --sort=committerdate | tail -1)" >> $GITHUB_ENV
+        echo "LATEST_TAG=$(git tag --list --sort=committerdate | tail -1)"
         echo "The latest tag is $LATEST_TAG"
 
     - name: Set up Docker Buildx
