@@ -34,6 +34,7 @@ jobs:
       run: |
         echo "LATEST_TAG=$(git tag --list --sort=committerdate | tail -1)"
         echo "The latest tag is $LATEST_TAG"
+        echo "::set-output name=latest_tag::${LATEST_TAG}"
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -45,12 +46,9 @@ jobs:
 
     - name: Tag Docker Image
       run: |
-        echo "docker tag app:latest ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG"
-        docker tag app:latest ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
+        docker tag app:latest ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:${{ steps.set_latest_tag.outputs.latest_tag }}
         docker image ls
     
-
-
     # - name: Authenticate to GAR
     #   run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${{ vars.REGION }}-docker.pkg.dev
 
