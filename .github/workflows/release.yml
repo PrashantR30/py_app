@@ -47,9 +47,9 @@ jobs:
         docker tag app:latest ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:${{ env.LATEST_TAG }}
         docker image ls
     
-    # - name: Authenticate to GAR
-    #   run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${{ vars.REGION }}-docker.pkg.dev
+    - name: Authenticate to GAR
+      run: gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${{ vars.REGION }}-docker.pkg.dev
 
-    # - name: Push to GAR
-    #   run: docker push ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
+    - name: Push to GAR
+      run: docker push ${{ vars.GAR_URL }}/${{ vars.IMAGE_NAME }}:$LATEST_TAG
 
